@@ -3,7 +3,7 @@ import scrapy
 
 class IconItems(scrapy.Item):
     name = scrapy.Field()
-    firsturl=scrapy.Field()
+    status=scrapy.Field()
     secondurl = scrapy.Field()
     website = scrapy.Field()
     whitepaper = scrapy.Field()
