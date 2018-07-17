@@ -11,7 +11,7 @@ class MySpider(scrapy.spiders.Spider):
     #爬取的地址
     start_urls = ["https://icodrops.com/category/ended-ico/",
         "https://icodrops.com/category/upcoming-ico/",
-        "https://icodrops.com/category/active-ico/"]
+       "https://icodrops.com/category/active-ico/"]
    #第一级url爬取方法
     def parse(self, response):
         items=[]
@@ -46,7 +46,10 @@ class MySpider(scrapy.spiders.Spider):
                 url = socialwebs[i]
                 socials.append(url)
             item['soclinks']=socials
-
+            #以下是获取公募时间
+            time=box.xpath('.//div[@class="col-12 title-h4"][1]/h4/text()').extract()
+            print("".join(time).replace(' ','').replace("\n", "").split()[1])
+            item['time']="".join(time).replace(' ','').replace("\n", "").split()[1]
             #以下是获取二级url右侧数据
             dataright=box.xpath('.//div[@class="col-12 col-md-6"][2]/li//span/text()').extract()
             k=0
@@ -58,7 +61,7 @@ class MySpider(scrapy.spiders.Spider):
                # elif element=='ICO Token Price:':
                #     item['price']=box.xpath('.//div[@class="col-12 col-md-6"][2]/li/text()').extract()[k]
                 k=k+1
-            #补齐二级右侧空字段
+            #补齐空字段
             #二级url空字段处理
             icon_items_right=['Accepts: ']
             #集合差集
@@ -86,7 +89,7 @@ class MySpider(scrapy.spiders.Spider):
                     item['availablesale']=box.xpath('.//div[@class="col-12 col-md-6"][1]/li/text()').extract()[j]
                 j=j+1
                 
-            #补齐二级左侧空字段
+            #补齐空字段
             #二级url空字段处理
             icon_items=['Ticker: ','ICO Token Price:','Fundraising Goal:','Total Tokens: ','Available for Token Sale: ']
             #集合差集
